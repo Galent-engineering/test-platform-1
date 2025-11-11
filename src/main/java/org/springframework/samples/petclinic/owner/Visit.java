@@ -17,13 +17,15 @@ package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.model.BaseEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.petclinic.model.BaseEntity;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -40,15 +42,32 @@ public class Visit extends BaseEntity {
 	private LocalDate date;
 
 	@NotBlank
+	@Column(name = "description")
 	private String description;
 
+	@ManyToOne
+	@JoinColumn(name = "pet_id")
 	private Pet pet;
 
 	/**
-	 * Creates a new instance of Visit for the current date
+	 * Default constructor required by JPA.
+	 * Initializes @NonNull fields to satisfy NullAway.
 	 */
 	public Visit() {
-		this.date = LocalDate.now();
+		// Initialize @NonNull fields with dummy values
+		this.description = "";
+		this.pet = new Pet();
+	}
+
+	/**
+	 * Creates a new instance of Visit for the given date and description
+	 * @param date the date of this visit
+	 * @param description the description of this visit
+	 */
+	public Visit(LocalDate date, String description) {
+		this.date = date;
+		this.description = description != null ? description : "";
+		this.pet = new Pet();
 	}
 
 	public LocalDate getDate() {
