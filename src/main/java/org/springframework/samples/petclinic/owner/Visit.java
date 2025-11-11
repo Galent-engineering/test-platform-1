@@ -42,7 +42,6 @@ public class Visit extends BaseEntity {
 	private LocalDate date;
 
 	@NotBlank
-	@Column(name = "description")
 	private String description;
 
 	@ManyToOne
@@ -50,22 +49,16 @@ public class Visit extends BaseEntity {
 	private Pet pet;
 
 	/**
-	 * Default constructor required by JPA.
-	 * Initializes @NonNull fields to satisfy NullAway.
+	 * Creates a new instance of Visit for the current date (useful for JPA).
 	 */
 	public Visit() {
-		// Initialize @NonNull fields with dummy values
+		this.date = LocalDate.now();
 		this.description = "";
 		this.pet = new Pet();
 	}
 
-	/**
-	 * Creates a new instance of Visit for the given date and description
-	 * @param date the date of this visit
-	 * @param description the description of this visit
-	 */
 	public Visit(LocalDate date, String description) {
-		this.date = date;
+		this.date = date != null ? date : LocalDate.now();
 		this.description = description != null ? description : "";
 		this.pet = new Pet();
 	}
