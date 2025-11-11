@@ -57,7 +57,8 @@ public class Pet extends NamedEntity {
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pet")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "pet_id")
 	private List<Visit> visits = new ArrayList<>();
 
 	public void setBirthDate(LocalDate birthDate) {
@@ -96,9 +97,9 @@ public class Pet extends NamedEntity {
 	}
 
 	/**
-	 * Calculate the age of the pet based on its birth date.
-	 * @return A formatted string representing the pet's age in "X Years Y Months" format,
-	 * "Not yet born" for future dates, or "Unknown" if birth date is null.
+	 * Calculate the age of the pet based on birth date.
+	 * @return formatted age string in "X years old" format, or "Not yet born" for future
+	 * dates
 	 */
 	public String getAge() {
 		if (this.birthDate == null) {
@@ -106,36 +107,23 @@ public class Pet extends NamedEntity {
 		}
 
 		LocalDate today = LocalDate.now();
-		LocalDate birth = this.birthDate;
 
-		if (birth.isAfter(today)) {
+		if (this.birthDate.isAfter(today)) {
 			return "Not yet born";
 		}
 
-		Period period = Period.between(birth, today);
+		Period period = Period.between(this.birthDate, today);
 		int years = period.getYears();
-		int months = period.getMonths();
 
-		// Handle edge case: less than 1 month old
-		if (years == 0 && months == 0) {
-			return "Less than 1 Month";
+		if (years == 0) {
+			return "Less than 1 year old";
 		}
-
-		// Format output
-		StringBuilder ageStr = new StringBuilder();
-		
-		if (years > 0) {
-			ageStr.append(years).append(years == 1 ? " Year" : " Years");
+		else if (years == 1) {
+			return "1 year old";
 		}
-		
-		if (months > 0) {
-			if (years > 0) {
-				ageStr.append(" ");
-			}
-			ageStr.append(months).append(months == 1 ? " Month" : " Months");
+		else {
+			return years + " years old";
 		}
-
-		return ageStr.toString();
 	}
 
 }
