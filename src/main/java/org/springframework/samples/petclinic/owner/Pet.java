@@ -17,8 +17,7 @@ package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -57,25 +56,20 @@ public class Pet extends NamedEntity {
 	private Owner owner;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pet")
-	private Set<Visit> visits = new HashSet<>();
+	private Set<Visit> visits = new LinkedHashSet<>();
 
-	/**
-	 * Default constructor required by JPA.
-	 * Initializes @NonNull fields to satisfy NullAway.
-	 */
 	public Pet() {
-		// Initialize @NonNull fields with dummy values
 		this.birthDate = LocalDate.now();
 		this.type = new PetType();
 		this.owner = new Owner();
 	}
 
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-	}
-
 	public LocalDate getBirthDate() {
 		return this.birthDate;
+	}
+
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
 	}
 
 	public PetType getType() {
@@ -94,7 +88,7 @@ public class Pet extends NamedEntity {
 		this.owner = owner;
 	}
 
-	public Collection<Visit> getVisits() {
+	public Set<Visit> getVisits() {
 		return this.visits;
 	}
 
@@ -103,10 +97,6 @@ public class Pet extends NamedEntity {
 		visit.setPet(this);
 	}
 
-	/**
-	 * Return the age of the pet in years.
-	 * @return the age in years, or 0 if birthDate is null
-	 */
 	public int getAge() {
 		if (this.birthDate == null) {
 			return 0;
