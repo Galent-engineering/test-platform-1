@@ -100,9 +100,9 @@ public class Pet extends NamedEntity {
 	/**
 	 * Calculates and returns the pet's age as a formatted string.
 	 * @return formatted age string: - "Unknown" if birth date is null - "Not yet
-	 * born" if birth date is in the future - "Less than 1 year old" if pet is under 1
-	 * year old - "1 year old" if pet is exactly 1 year old - "X years old" if pet is
-	 * X years old (plural)
+	 * born" if birth date is in the future - "Less than 1 year old" if pet is under
+	 * 1 year old - "1 year old" if pet is exactly 1 year old - "X years old" if pet
+	 * is X years old (plural)
 	 */
 	public String getAge() {
 		// Handle null birth date
