@@ -99,36 +99,35 @@ public class Pet extends NamedEntity {
 
 	/**
 	 * Calculates and returns the pet's age as a formatted string.
-	 * 
-	 * @return formatted age string:
-	 *         - "Unknown" if birth date is null
-	 *         - "Not yet born" if birth date is in the future
-	 *         - "Less than 1 year old" if pet is under 1 year old
-	 *         - "1 year old" if pet is exactly 1 year old
-	 *         - "X years old" if pet is X years old (plural)
+	 * @return formatted age string: - "Unknown" if birth date is null - "Not yet
+	 * born" if birth date is in the future - "Less than 1 year old" if pet is under 1
+	 * year old - "1 year old" if pet is exactly 1 year old - "X years old" if pet is
+	 * X years old (plural)
 	 */
 	public String getAge() {
 		// Handle null birth date
 		if (this.birthDate == null) {
 			return "Unknown";
 		}
-		
+
 		LocalDate today = LocalDate.now();
-		
+
 		// Handle future birth date
 		if (this.birthDate.isAfter(today)) {
 			return "Not yet born";
 		}
-		
+
 		// Calculate years
 		int years = Period.between(this.birthDate, today).getYears();
-		
+
 		// Format output based on age
 		if (years == 0) {
 			return "Less than 1 year old";
-		} else if (years == 1) {
+		}
+		else if (years == 1) {
 			return "1 year old";
-		} else {
+		}
+		else {
 			return years + " years old";
 		}
 	}
