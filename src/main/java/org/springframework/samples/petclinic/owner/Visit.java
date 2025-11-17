@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,15 @@ package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.model.BaseEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import org.jspecify.annotations.Nullable;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.petclinic.model.BaseEntity;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -38,32 +39,52 @@ public class Visit extends BaseEntity {
 
 	@Column(name = "visit_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private @Nullable LocalDate date;
+	private LocalDate date;
 
 	@NotBlank
-	private @Nullable String description;
+	private String description;
+
+	@ManyToOne
+	@JoinColumn(name = "pet_id")
+	private Pet pet;
 
 	/**
-	 * Creates a new instance of Visit for the current date
+	 * Creates a new instance of Visit for the current date (useful for JPA).
 	 */
 	public Visit() {
 		this.date = LocalDate.now();
+		this.description = "";
+		this.pet = new Pet();
 	}
 
-	public @Nullable LocalDate getDate() {
+	public Visit(LocalDate date, String description) {
+		this.date = date != null ? date : LocalDate.now();
+		this.description = description != null ? description : "";
+		this.pet = new Pet();
+	}
+
+	public LocalDate getDate() {
 		return this.date;
 	}
 
-	public void setDate(@Nullable LocalDate date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
-	public @Nullable String getDescription() {
+	public String getDescription() {
 		return this.description;
 	}
 
-	public void setDescription(@Nullable String description) {
+	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Pet getPet() {
+		return this.pet;
+	}
+
+	public void setPet(Pet pet) {
+		this.pet = pet;
 	}
 
 }
