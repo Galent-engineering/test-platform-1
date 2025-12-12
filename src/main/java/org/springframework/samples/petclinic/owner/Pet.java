@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -54,6 +55,12 @@ public class Pet extends NamedEntity {
 	@JoinColumn(name = "type_id")
 	private @Nullable PetType type;
 
+	@Column(name = "weight", nullable = true)
+	private @Nullable BigDecimal weight;
+
+	@Column(name = "weight_unit", nullable = true)
+	private @Nullable String weightUnit = "kg";
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "pet_id")
 	@OrderBy("date ASC")
@@ -73,6 +80,22 @@ public class Pet extends NamedEntity {
 
 	public void setType(@Nullable PetType type) {
 		this.type = type;
+	}
+
+	public @Nullable BigDecimal getWeight() {
+		return this.weight;
+	}
+
+	public void setWeight(@Nullable BigDecimal weight) {
+		this.weight = weight;
+	}
+
+	public @Nullable String getWeightUnit() {
+		return this.weightUnit;
+	}
+
+	public void setWeightUnit(@Nullable String weightUnit) {
+		this.weightUnit = weightUnit;
 	}
 
 	public Collection<Visit> getVisits() {
