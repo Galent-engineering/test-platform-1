@@ -172,6 +172,8 @@ class PetController {
 			existingPet.setName(pet.getName());
 			existingPet.setBirthDate(pet.getBirthDate());
 			existingPet.setType(pet.getType());
+			existingPet.setWeight(pet.getWeight());
+			existingPet.setWeightUnit(pet.getWeightUnit());
 		}
 		else {
 			owner.addPet(pet);
