@@ -41,9 +41,11 @@ CREATE TABLE IF NOT EXISTS pets (
   birth_date DATE,
   type_id INT(4) UNSIGNED NOT NULL,
   owner_id INT(4) UNSIGNED,
+  vet_id INT(4) UNSIGNED,
   INDEX(name),
   FOREIGN KEY (owner_id) REFERENCES owners(id),
-  FOREIGN KEY (type_id) REFERENCES types(id)
+  FOREIGN KEY (type_id) REFERENCES types(id),
+  FOREIGN KEY (vet_id) REFERENCES vets(id)
 ) engine=InnoDB;
 
 CREATE TABLE IF NOT EXISTS visits (
