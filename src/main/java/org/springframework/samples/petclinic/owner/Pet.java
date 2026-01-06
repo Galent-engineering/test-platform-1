@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
+import org.springframework.samples.petclinic.vet.Vet;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,9 +31,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Simple business object representing a pet.
@@ -40,7 +39,6 @@ import org.jspecify.annotations.Nullable;
  * @author Ken Krebs
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @author Wick Dynex
  */
 @Entity
 @Table(name = "pets")
@@ -48,31 +46,54 @@ public class Pet extends NamedEntity {
 
 	@Column(name = "birth_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private @Nullable LocalDate birthDate;
+	private LocalDate birthDate;
 
 	@ManyToOne
 	@JoinColumn(name = "type_id")
-	private @Nullable PetType type;
+	private PetType type;
+
+	@ManyToOne
+	@JoinColumn(name = "owner_id")
+	private Owner owner;
+
+	@ManyToOne
+	@JoinColumn(name = "vet_id")
+	private Vet designatedVet;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "pet_id")
-	@OrderBy("date ASC")
-	private final Set<Visit> visits = new LinkedHashSet<>();
+	private Set<Visit> visits = new LinkedHashSet<>();
 
-	public void setBirthDate(@Nullable LocalDate birthDate) {
+	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 
-	public @Nullable LocalDate getBirthDate() {
+	public LocalDate getBirthDate() {
 		return this.birthDate;
 	}
 
-	public @Nullable PetType getType() {
+	public PetType getType() {
 		return this.type;
 	}
 
-	public void setType(@Nullable PetType type) {
+	public void setType(PetType type) {
 		this.type = type;
+	}
+
+	public Owner getOwner() {
+		return this.owner;
+	}
+
+	protected void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
+	public Vet getDesignatedVet() {
+		return this.designatedVet;
+	}
+
+	public void setDesignatedVet(Vet designatedVet) {
+		this.designatedVet = designatedVet;
 	}
 
 	public Collection<Visit> getVisits() {
